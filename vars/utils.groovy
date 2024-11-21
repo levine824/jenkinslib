@@ -5,14 +5,16 @@ def getPackageName(String packageName) {
     def sdf = new SimpleDateFormat("yyyyMMdHHmmss")
     def dateStr = sdf.format(Calendar.getInstance().getTime())
 
-    def packageNameList = Arrays.asList(packageName.split("\\.tar.gz|\\.apk|\\.ipa"))
+    def index = packageName.indexOf(".")
+    def name = packageName.substring(0, index)
+    def suffix = packageName.substring(index)
 
-    def newPackageName = packageName
-
-    if (packageNameList.size() == 2) {
-        newPackageName = packageNameList[0] + "-" + dateStr + packageNameList[1]
+    if (suffix == ".tar.gz" || suffix == ".apk" || suffix == ".ipa") {
+        return name + "-" + dateStr + suffix
+    } else {
+        echo "文件名不符合规范: ${packageName}"
+        return packageName
     }
 
-    return newPackageName
 }
 
