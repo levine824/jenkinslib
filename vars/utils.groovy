@@ -1,7 +1,7 @@
 import java.text.SimpleDateFormat
 
-// 获取带时间戳的包名
-def getPackageName(String packageName) {
+// 包名中添加时间戳
+def addTimestampToPackageName(String packageName) {
     def sdf = new SimpleDateFormat("yyyyMMdHHmmss")
     def dateStr = sdf.format(Calendar.getInstance().getTime())
 
@@ -15,6 +15,8 @@ def getPackageName(String packageName) {
         echo "文件名不符合规范: ${packageName}"
         return packageName
     }
-
 }
+
+
+
 

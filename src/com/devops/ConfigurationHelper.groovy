@@ -1,34 +1,21 @@
 package com.devops
 
-class ConfigurationHelper implements Serializable {
+class ConfigurationHelper {
 
-    static Properties removeQuotes(Properties props) {
-        def propsWithoutQuotes = new Properties()
-
-        /* props.stringPropertyNames().forEach(key -> {
-             def valueWithoutQuotes = props.getProperty(key).replaceAll("^\"|\"\$", "")
-             propsWithoutQuotes.setProperty(key, valueWithoutQuotes)
-         })*/
-
-        for (String key : props.stringPropertyNames()) {
-            def valueWithoutQuotes = props.getProperty(key).replaceAll("^\"|\"\$", "")
-            propsWithoutQuotes.setProperty(key, valueWithoutQuotes)
-        }
-
-        return propsWithoutQuotes
+    static setEnvProperty(Script script, Map map) {
+        map.each { key, value -> script.env.setProperty(key, value) }
     }
 
-    // Iterate properties and set variables "${key}=${value}"
-    static setVariables(Script script, Properties props) {
-        /*props.stringPropertyNames().forEach(key -> {
-            def value = props.getProperty(key)
-            script "${key}=${value}"
-        })*/
-
-        for (String key : props.stringPropertyNames()) {
-            def value = props.getProperty(key)
-            script "${key}=${value}"
+    static removePrefix(Map map, String prefix) {
+        def mapWithoutPrefix = [:]
+        map.each { key ->
+            if (key.startsWith(prefix)) {
+                def keyWithoutPrefix = key.substring(prefix.length())
+                mapWithoutPrefix[keyWithoutPrefix] = map[key]
+            }
         }
+
+        return mapWithoutPrefix
     }
 
 }

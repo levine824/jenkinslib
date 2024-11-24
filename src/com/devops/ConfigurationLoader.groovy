@@ -1,16 +1,31 @@
 package com.devops
 
-class ConfigurationLoader implements Serializable {
 
-    static Properties loadConfiguration(Script script, String path) {
-        def fileStr = script.readFile encoding: 'UTF-8', file: "${path}"
+class ConfigurationLoader {
 
-        Properties props = new Properties()
-        try {
-            props.load(new StringReader(fileStr))
-        } catch (IOException e) {
-            throw new Exception("读取配置文件错误:" + e)
+    static Map loadConfiguration(Script script, String filePath) {
+        def props = loadConfigurationWithoutQuotes(script, filePath)
+        def map = props.collectEntries { key, value -> [(key): value] }
+        return map
+    }
+
+    static Map loadConfigurationByPrefix(Script script, String filePath, String prefix) {
+        def props = loadConfigurationWithoutQuotes(script, filePath)
+        def map = props.findAll { key, value -> key.startsWith(prefix) }
+        return map
+    }
+
+    //@NonCPS
+    private static Properties loadConfigurationWithoutQuotes(Script script, String filePath) {
+        def configFile = new File(filePath)
+        if (!configFile.exists()) {
+            script.error "配置文件 ${filePath} 不存在"
         }
+
+        def props = new Properties()
+        configFile.withInputStream { stream -> props.load(stream) }
+
+        props.each { key, value -> props[key] = value.replaceAll("^\"|\"\$", "") }
 
         return props
     }
