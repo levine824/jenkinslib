@@ -17,8 +17,8 @@ class ConfigHelper {
 
     ConfigObject setEnvProperty(Script script) {
         ConfigObject formattedConfig = new ConfigObject()
-        config.each { key, value ->
-            String formattedKey = key.toString().replaceAll('.', '_').toUpperCase()
+        config.toProperties().each { key, value ->
+            String formattedKey = key.toString().replace('.', '_').toUpperCase()
             script.env.setProperty(formattedKey, value)
             formattedConfig[formattedKey] = value
         }
