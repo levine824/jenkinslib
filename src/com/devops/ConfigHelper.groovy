@@ -1,3 +1,5 @@
+package com.devops
+
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -23,4 +25,5 @@ class ConfigHelper {
         }
         return formattedConfig
     }
+
 }
