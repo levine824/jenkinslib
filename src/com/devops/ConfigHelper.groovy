@@ -3,15 +3,21 @@ import java.nio.file.Paths
 
 class ConfigHelper {
 
+    private String env
     private ConfigObject config
 
-    private ConfigHelper() { }
+    ConfigHelper() {
+        this.env = ''
+    }
 
-    static ConfigHelper parse(String path, String env = '') {
-        ConfigHelper helper = new ConfigHelper()
+    ConfigHelper(String env) {
+        this.env = env
+    }
+
+    ConfigObject parse(String path) {
         URL configFile = Files.createFile(Paths.get(path)).toUri().toURL()
-        helper.config = new ConfigSlurper(env).parse(configFile)
-        return helper
+        this.config = new ConfigSlurper(env).parse(configFile)
+        return config
     }
 
     ConfigObject setEnvProperty(Script script) {
@@ -23,4 +29,5 @@ class ConfigHelper {
         }
         return formattedConfig
     }
+
 }
