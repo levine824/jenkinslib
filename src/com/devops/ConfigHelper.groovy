@@ -1,17 +1,16 @@
 package com.devops
 
-import java.nio.file.Files
 import java.nio.file.Paths
 
 class ConfigHelper {
 
     private ConfigObject config
 
-    private ConfigHelper() { }
+    private ConfigHelper() {}
 
     static ConfigHelper parse(String path, String env = '') {
         ConfigHelper helper = new ConfigHelper()
-        URL configFile = Files.createFile(Paths.get(path)).toUri().toURL()
+        URL configFile = Paths.get(path).toUri().toURL()
         helper.config = new ConfigSlurper(env).parse(configFile)
         return helper
     }
