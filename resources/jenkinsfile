@@ -1,4 +1,4 @@
-pipeline{
+pipeline {
     // 不使用全局代理
     agent none
 
@@ -6,62 +6,60 @@ pipeline{
     options {
         timestamps()
         // 跳过默认代码检出
-        skipDefaultCheckout() 
+        skipDefaultCheckout()
         // 设置整个 Pipeline 运行的超时时间
-        timeout(time: 1, unit: 'HOURS')  
+        timeout(time: 1, unit: 'HOURS')
         // Pipeline 失败后重试次数
         // retry(1)
         // 构建历史设置，保留30天，历史记录数量为90
-        buildDiscarder(logRotator(daysToKeepStr: '30', numToKeepStr: '90')) 
+        buildDiscarder(logRotator(daysToKeepStr: '30', numToKeepStr: '90'))
     }
 
     // 定时触发任务
     // triggers {
-    //     cron('0 0 * * * ') 
+    //     cron('0 0 * * * ')
     // }
 
     // 环境变量
     environment {
-        //INIT_IMAGE="${params.INIT_IMAGE}"
+    //INIT_IMAGE="${params.INIT_IMAGE}"
     }
 
     stages {
-        stage('INIT'){
+        stage('INIT') {
             agent {
                 // docker 代理
                 docker {
                     label "${INIT_LABEL}"
                     image "${INIT_IMAGE}"
                 }
-                // k8s 代理
-                //kubernetes { 
-                //    label 'test'
-                //    cloud 'k8s'
-                //    namespace 'default'
-                //    yamlFile ''
-                //}
+                /*k8s 代理
+                kubernetes {
+                    label 'test'
+                    cloud 'k8s'
+                    namespace 'default'
+                    yamlFile ''
+                }*/
             }
 
             steps {
                 // 检出配置文件
-                checkout scmGit(branches: [[name: '${GIT_BRANCH}']], \
+                checkout scmGit(branches: [[name: "${GIT_BRANCH}"]], \
                 extensions: [cleanBeforeCheckout(deleteUntrackedNestedRepositories: true)], \
-                userRemoteConfigs: [[credentialsId: "${GIT_CREDENTIAL_ID}", url: '${GIT_URL}']])
+                userRemoteConfigs: [[credentialsId: "${GIT_CREDENTIAL_ID}", url: "${GIT_URL}"]])
 
                 // 加载配置文件
-                env.props = ConfigurationLoader.loadConfiguration this, ${CONFIG_FILE}
+                Map configs = ConfigurationLoader.loadConfiguration this, "${CONFIG_FILE_PATH}"
+                // 设置环境变量
+                ConfigurationHelper.setEnvProperty this, configs
             }
 
-             post {
+            post {
                 success {
-                    script {
-                        sendMQ("success")
-                    }
+                        sendMQ('success')
                 }
                 failure {
-                    script {
-                        sendMQ("failed")
-                    }
+                        sendMQ('failed')
                 }
             }
         }
