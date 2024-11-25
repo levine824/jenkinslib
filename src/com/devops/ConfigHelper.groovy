@@ -10,8 +10,7 @@ class ConfigHelper {
 
     static ConfigHelper parse(String path, String env = '') {
         ConfigHelper helper = new ConfigHelper()
-        //URL configFile = Paths.get(path).toUri().toURL()
-        URL configFile = new File(path).toURI().toURL()
+        URL configFile = Paths.get(path).toUri().toURL()
         helper.config = new ConfigSlurper(env).parse(configFile)
         return helper
     }
@@ -19,7 +18,7 @@ class ConfigHelper {
     ConfigObject setEnvProperty(Script script) {
         ConfigObject formattedConfig = new ConfigObject()
         config.each { key, value ->
-            String formattedKey = key.toString().replace('.', '_').toUpperCase()
+            String formattedKey = key.toString().replaceAll('.', '_').toUpperCase()
             script.env.setProperty(formattedKey, value)
             formattedConfig[formattedKey] = value
         }
