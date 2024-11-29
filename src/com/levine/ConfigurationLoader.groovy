@@ -1,4 +1,4 @@
-package com.levine.jenkinslibrary
+package com.levine
 
 import groovy.yaml.YamlSlurper
 import java.nio.file.Path
