@@ -1,5 +1,5 @@
 package com.levine
-
+@Grab('org.codehaus.groovy:groovy-yaml:3.0.23')
 import groovy.yaml.YamlSlurper
 import java.nio.file.Path
 import java.nio.file.Paths
