@@ -6,12 +6,12 @@ import java.nio.file.Paths
 
 class ConfigurationLoader {
     
-    static Map loadYaml(String path) {
+    static def loadYaml(String path) {
         Path p = Paths.get(path)
         if (!p.exists()) {
             throw new FileNotFoundException('Path not found!')
         }
-        Map config = new YamlSlurper().parse(p)
+        def config = new YamlSlurper().parse(p)
         return config
     }
 }
