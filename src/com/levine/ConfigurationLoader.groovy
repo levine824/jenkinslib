@@ -12,7 +12,8 @@ class ConfigurationLoader {
 
     static def loadYaml(String path) {
         Path p = Paths.get(path)
-        if (!(Files.exists(p))) {
+        boolean isExists = Files.exists(p)
+        if (!isExists) {
             throw new FileNotFoundException('Path not found!')
         }
         def config = new YamlSlurper().parse(p)
