@@ -9,12 +9,12 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 class ConfigurationLoader {
-    static Map loadYaml(String path) {
+    static Map<String, Object> loadYaml(String path) {
         InputStream inputStream = null
         try {
             inputStream = new FileInputStream(path)
             Yaml yaml = new Yaml();
-            Map<String,Map> data = yaml.load(inputStream);
+            Map<String, Object> data = yaml.load(inputStream);
             return data
         } catch (IOException e) {
             return [:]
