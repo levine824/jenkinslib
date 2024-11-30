@@ -3,16 +3,22 @@ package com.levine824.jenkinslibrary
 @Grab('org.yaml:snakeyaml:2.3')
 import org.yaml.snakeyaml.Yaml
 
-
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
-
 class ConfigurationLoader {
-    static Map loadYaml(String path) {
+
+    static final String DEFAULT_CONFIGURATION = '/default-configuration.yml'
+
+    static Map loadConfiguration(String path) {
+        return loadYaml(path, false)
+    }
+
+    static Map loadDefaultConfiguration() {
+        return loadYaml("", true)
+    }
+
+    private static Map loadYaml(String path, boolean isDefault) {
         InputStream inputStream = null
         try {
-            inputStream = new FileInputStream(path)
+            inputStream = isDefault ? this.class.getResourceAsStream(DEFAULT_CONFIGURATION) : new FileInputStream(path)
             Yaml yaml = new Yaml();
             Map data = yaml.load(inputStream);
             return data
@@ -24,4 +30,5 @@ class ConfigurationLoader {
             }
         }
     }
+
 }
