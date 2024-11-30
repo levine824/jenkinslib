@@ -14,7 +14,7 @@ class ConfigurationLoader {
         try {
             inputStream = new FileInputStream(path)
             Yaml yaml = new Yaml();
-            Map<String, Object> data = yaml.load(inputStream);
+            Map data = yaml.load(inputStream);
             return data
         } catch (IOException e) {
             return [:]
