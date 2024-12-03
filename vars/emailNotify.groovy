@@ -1,9 +1,9 @@
 import groovy.transform.Field
 
-//@Field String STEP_NAME = getClass().getName()
-@Field String RESOURCE_FILE = "com/levine824/notification/notify.tpl"
+@Field String STEP_NAME = getClass().getName()
+@Field String RESOURCE_FILE = "notification/notify.tpl"
 
-def call(String recipient) {
+def call(String recipient, Map args = [:]) {
     script {
         def tplContent = libraryResource RESOURCE_FILE
 
