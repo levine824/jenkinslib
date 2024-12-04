@@ -31,19 +31,19 @@ class ConfigLoader {
         }
     }
 
-    static Map stageConfig(Map config, String name) {
-        return getConfig(config, 'stage', name)
+    static Map stageConfig(Map map, String name) {
+        return getConfig(map, 'stage', name)
     }
 
-    static Map stepConfig(Map config, String name) {
-        return getConfig(config, 'step', name)
+    static Map stepConfig(Map map, String name) {
+        return getConfig(map, 'step', name)
     }
 
-    static Map generalConfig(Map config, String name) {
-        return getConfig(config, 'general', name)
+    static Map generalConfig(Map map, String name) {
+        return getConfig(map, 'general', name)
     }
 
-    private static Map getConfig(Map config, String type, String name) {
-        return config?.get(type)?.get(name) ?: [:]
+    private static Map getConfig(Map map, String type, String name) {
+        return map?.get(type)?.get(name) ?: [:]
     }
 }
