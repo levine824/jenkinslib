@@ -2,12 +2,10 @@ package com.levine824.jenkins.config
 
 @Grab('org.yaml:snakeyaml:2.3')
 import org.yaml.snakeyaml.Yaml
-import com.levine824.jenkins.PipelineEnvironment
-
 
 class ConfigLoader {
-
-    static final String DEFAULT_CONFIG = 'config.yml'
+    //static final String DEFAULT_CONFIG = 'config.yml'
+    //InputStream is = getClass().getResourceAsStream(DEFAULT_CONFIG)
 
     static Map parse(String yaml) {
         File file = new File(yaml)
@@ -15,16 +13,11 @@ class ConfigLoader {
             InputStream fis = new FileInputStream(file)
             return load(fis)
         } else {
-            throw new FileNotFoundException("配置文件不存在！")
+            throw new FileNotFoundException("配置文件不存在!")
         }
     }
 
-    static Map loadDefault() {
-        InputStream is = getClass().getResourceAsStream(DEFAULT_CONFIG)
-        return load(is)
-    }
-
-    private static Map load(InputStream is) {
+    static Map load(InputStream is) {
         try {
             Yaml yaml = new Yaml()
             Map map = yaml.load(is)
@@ -38,19 +31,19 @@ class ConfigLoader {
         }
     }
 
-    static Map stageConfig(PipelineEnvironment env, String name) {
-        return getConfig(env, 'stage', name)
+    static Map stageConfig(Script script, String name) {
+        return getConfig(script, 'stage', name)
     }
 
-    static Map stepConfig(PipelineEnvironment env, String name) {
-        return getConfig(env, 'step', name)
+    static Map stepConfig(Script script, String name) {
+        return getConfig(script, 'step', name)
     }
 
-    static Map generalConfig(PipelineEnvironment env, String name) {
-        return getConfig(env, 'general', name)
+    static Map generalConfig(Script script, String name) {
+        return getConfig(script, 'general', name)
     }
 
-    private static Map getConfig(PipelineEnvironment env, String node, String name) {
-        return env?.config?.get(node)?.get(name) ?: [:]
+    private static Map getConfig(Script script, String type, String name) {
+        return script.config?.get(type)?.get(name) ?: [:]
     }
 }
