@@ -4,7 +4,7 @@ package com.levine824.jenkins.config
 import org.yaml.snakeyaml.Yaml
 
 class ConfigLoader {
-    //static final String DEFAULT_CONFIG = 'config.yml'
+    static final String DEFAULT_CONFIG = 'config.yml'
     //InputStream is = getClass().getResourceAsStream(DEFAULT_CONFIG)
 
     static Map parse(String yaml) {
