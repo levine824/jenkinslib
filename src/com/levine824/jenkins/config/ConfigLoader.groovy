@@ -4,10 +4,11 @@ package com.levine824.jenkins.config
 import org.yaml.snakeyaml.Yaml
 
 class ConfigLoader {
-    static final String DEFAULT_CONFIG = 'config.yml'
+    //private static final String DEFAULT_CONFIG = 'config.yml'
     //InputStream is = getClass().getResourceAsStream(DEFAULT_CONFIG)
+    private Map config
 
-    static Map parse(String yaml) {
+    static ConfigLoader parse(String yaml) {
         File file = new File(yaml)
         if (file.exists()) {
             InputStream fis = new FileInputStream(file)
@@ -17,11 +18,11 @@ class ConfigLoader {
         }
     }
 
-    static Map load(InputStream is) {
+    static ConfigLoader load(InputStream is) {
         try {
             Yaml yaml = new Yaml()
             Map map = yaml.load(is)
-            return map
+            return new ConfigLoader(map)
         } catch (IOException e) {
             throw new Exception("读取配置输入流异常！")
         } finally {
@@ -31,19 +32,23 @@ class ConfigLoader {
         }
     }
 
-    static Map stageConfig(Map map, String name) {
-        return getConfig(map, 'stage', name)
+    private ConfigLoader(Map config) {
+        this.config = config
     }
 
-    static Map stepConfig(Map map, String name) {
-        return getConfig(map, 'step', name)
+    Map generalConfig(String name) {
+        return getConfig('general', name)
     }
 
-    static Map generalConfig(Map map, String name) {
-        return getConfig(map, 'general', name)
+    Map stageConfig(String name) {
+        return getConfig('stage', name)
     }
 
-    private static Map getConfig(Map map, String type, String name) {
-        return map?.get(type)?.get(name) ?: [:]
+    Map stepConfig(String name) {
+        return getConfig('step', name)
+    }
+
+    private Map getConfig(String type, String name) {
+        return config?.get(type)?.get(name) ?: [:]
     }
 }
