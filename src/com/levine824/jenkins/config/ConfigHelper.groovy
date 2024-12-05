@@ -18,7 +18,7 @@ class ConfigHelper implements Serializable {
         return mergedMap
     }
 
-    private static Map merge(Map config, Map args) {
+    static Map merge(Map config, Map args) {
         Map mergedMap = new HashMap()
         args.each { key, value ->
             if (config.containsKey(key)) {
