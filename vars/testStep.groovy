@@ -5,5 +5,6 @@ import groovy.transform.Field
 
 def call(Map args = [:]) {
      def script = args[script]
+     echo "script:${script}"
      echo "${script.env.test}"
 }
