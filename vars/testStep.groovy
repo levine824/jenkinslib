@@ -3,7 +3,8 @@ import groovy.transform.Field
 
 @Field String STEP_NAME = getClass().getName()
 
-def call(Map args = [:]) {
-    echo "start!"
-    echo "${args[test].env.test}"
+def call(args) {
+    def sc = args[script]
+    echo "sc:${sc}"
+    echo "${sc.env.test}"
 }
