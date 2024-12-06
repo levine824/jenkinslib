@@ -5,5 +5,5 @@ import groovy.transform.Field
 
 def call(Map args = [:]) {
     echo "start!"
-    echo "${env.test}"
+    echo "${args[test].env.test}"
 }
