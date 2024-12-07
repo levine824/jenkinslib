@@ -6,7 +6,7 @@ import groovy.transform.Field
 
 def call(Map args = [:]) {
     stage(STAGE_NAME) {
-        agent $ { args.test }
+        agent "${args.test}"
         steps {
             script {
                 echo "stageName:${STAGE_NAME}"
