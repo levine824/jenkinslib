@@ -7,12 +7,13 @@ import com.levine824.jenkins.configuration.*
 
 def call(Map args = [:]) {
     stage(STAGE_NAME) {
-        def str = ConfigurationLoader.forTest()
+        //def str = ConfigurationLoader.forTest()
         agent "${args.test}"
         
         script{
+           sh "hostname"
            echo "stageName:${STAGE_NAME}"
-           echo "str:${str}"
+           //echo "str:${str}"
         }
 
     }
