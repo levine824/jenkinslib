@@ -1,3 +1,4 @@
 def call(Script script) {
-    script.getProperty('CONFIGURATION_TYPE')
+    def type = script.getProperty('CONFIGURATION_TYPE')
+    echo "${type}"
 }
