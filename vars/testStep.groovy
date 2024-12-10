@@ -8,7 +8,7 @@ import com.levine824.jenkins.config.ConfigHelper
 @Field Set GENERAL_CONFIG_KEYS = ['projectName']
 
 def call(Script script) {
-    def projectName = script.getParameterValue('PROJECT_NAME')
+    def projectName = script.params
     
     echo "${projectName}"
     
