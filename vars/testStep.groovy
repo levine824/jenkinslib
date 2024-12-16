@@ -8,8 +8,8 @@ import com.levine824.jenkins.config.ConfigHelper
 @Field Set GENERAL_CONFIG_KEYS = ['projectName']
 
 def call(Script script) {
-    def projectName = script.getProperty('params')
+    def testVar = script.getProperty('testVar')
     
-    echo "${projectName}"
+    echo "${testVar}"
     
 }
