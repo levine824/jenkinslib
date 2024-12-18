@@ -11,5 +11,4 @@ def call(Script script) {
     def testVar = script.testVar
     
     echo "${testVar}"
-    
 }

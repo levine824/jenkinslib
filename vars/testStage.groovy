@@ -5,10 +5,6 @@ import groovy.transform.Field
 @Field String STAGE_NAME = getClass().getName()
 
 def call(Map args = [:]) {
-    stage(STAGE_NAME) {
-       agent any
-       steps{
-         echo "${args.str}"
-       }
-    }
+   def testVar = 'successfully' 
+   testStep this
 }
