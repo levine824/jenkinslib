@@ -5,6 +5,5 @@ import groovy.transform.Field
 @Field String STAGE_NAME = getClass().getName()
 
 def call(Map args = [:]) {
-   def testVar = 'successfully' 
-   testStep this
+   env.testVar = 'successfully' 
 }

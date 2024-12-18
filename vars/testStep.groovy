@@ -7,8 +7,6 @@ import com.levine824.jenkins.config.ConfigHelper
 @Field Set STAGE_CONFIG_KEYS = ['git']
 @Field Set GENERAL_CONFIG_KEYS = ['projectName']
 
-def call(Script script) {
-    def testVar = script.testVar
-    
-    echo "${testVar}"
+def call(Script script) { 
+    echo "${env.testVar}"
 }
