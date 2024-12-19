@@ -1,0 +1,18 @@
+general:
+  projectName: 'jenkins-library'
+  git:
+    url:
+    branch:
+
+stage:
+  test:
+    label: 'test'
+
+step:
+  mainTest:
+    git:
+      url: 'testUrl'
+      username: 'levine'
+      password: '####'
+
+post:

@@ -1,51 +1,38 @@
 package com.levine824.jenkins.config
 
-@Grab('org.yaml:snakeyaml:2.3')
 import org.yaml.snakeyaml.Yaml
 
 class ConfigLoader {
 
-    static Map parse(String yaml) {
+    private Map config
+
+    static ConfigLoader load(String yaml) {
         try {
-            return new Yaml().load(yaml)
-        } catch (FileNotFoundException ignored) {
-            throw new Exception("配置文件未找到!")
+            Map config = new Yaml().load(yaml)
+            return new ConfigLoader(config)
         } catch (Exception e) {
-            throw new Exception("读取配置文件错误:" + e)
+            throw new Exception("读取配置文件错误:" + e.getMessage())
         }
     }
 
-    static Map load(InputStream io) {
-        Map config = [:]
+    private ConfigLoader(Map config) {
+        this.config = config
+    }
+
+    Map getConfig(ConfigType type, String key = null) {
         try {
-            io.with {
-                config = new Yaml().load(io)
-            }
-            return config
-        } catch (IOException ignored) {
-            throw new Exception("读取配置文件流异常!")
-        } catch (Exception e) {
-            throw new Exception("读取配置文件流错误:" + e)
-        }
-    }
-
-    static Map getConfig(Map config, ConfigType type, String name) {
-        return config?.get(type.toString())?.get(name) ?: [:]
-    }
-
-    static Map getConfig(Map config, Map<ConfigType, Set<String>> keySets) {
-        Map map = [:]
-        keySets.each { type, keySet ->
-            Map typeConfig = (Map) config?.get(type.toString()) ?: [:]
-            for (String key : keySet) {
-                if (typeConfig.containsKey(key) && !map.containsKey(key)) {
-                    map.put(key, typeConfig.get(key))
-                } else {
-                    throw new Exception("配置项" + key + "不存在或者重复!")
+            if (key == null) {
+                if (config instanceof Map<String, Map>) {
+                    return config?.get(type.toString()) ?: [:]
+                }
+            } else {
+                if (config instanceof Map<String, Map<String, Map>>) {
+                    return config?.get(type.toString())?.get(key) ?: [:]
                 }
             }
+            throw new IllegalArgumentException("配置项" + type + "格式错误!")
+        } catch (MissingPropertyException ignored) {
+            return [:]
         }
-        return map
     }
-
 }
